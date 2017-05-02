@@ -6,6 +6,11 @@ object Polynomial {
     Signal {
       b.apply()*b.apply() - 4*a.apply()*c.apply()
     }
+
+    // 5x² + 6x + 1 = 0
+    // a = 5, b = 6, c = 1
+    // 36 - 20
+    // 16
   }
 
   def computeSolutions(a: Signal[Double], b: Signal[Double],
@@ -15,6 +20,13 @@ object Polynomial {
     //    when it is negative we get two Complex solutions
 
 //    read https://www.mathsisfun.com/algebra/quadratic-equation.html
+
+
+      // (-b ± √Δ) / 2a
+    if (delta.apply() % 2 == 0.0)
+      Signal {
+//        Set((-b.apply() + square root of delta ) / 2 * a.apply())
+      }
     ???
   }
 }
