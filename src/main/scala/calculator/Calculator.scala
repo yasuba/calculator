@@ -17,7 +17,7 @@ object Calculator {
     expr match {
       case Literal(a) => a
       case Ref(a) => eval(references(a)(), Map(a -> references(a)))
-      case Plus(a,b) => 0.0
+      case Plus(a,b) => eval(a, Map()) + eval(b, Map())
     }
   }
 

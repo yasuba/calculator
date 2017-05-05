@@ -60,8 +60,7 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(resultRef("b")() == 1.0)
 
     val resultPlus = calc.computeValues(Map(
-        "a" -> Signal{Plus(Ref("b"), Literal(1.0))},
-      "b" -> Signal{Literal(1.0)}))
+        "a" -> Signal{Plus(Literal(1.0), Literal(1.0))}))
     assert(resultPlus("a")() == 2.0)
   }
 
