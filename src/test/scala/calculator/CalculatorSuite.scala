@@ -53,15 +53,36 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
 
   test("computeValues") {
     val calc = Calculator
-    val resultLiteral = calc.computeValues(Map("a" -> Signal {Literal(1.0)}))
+    val resultLiteral = calc.computeValues(Map("a" -> Signal{Literal(1.0)}))
     assert(resultLiteral("a")() == 1.0)
 
-    val resultRef = calc.computeValues(Map("a" -> Signal {Literal(1.0)}, "b" -> Signal {Ref("a")}))
+    val resultRef = calc.computeValues(Map("a" -> Signal{Literal(1.0)}, "b" -> Signal{Ref("a")}))
     assert(resultRef("b")() == 1.0)
+  }
 
-    val resultPlus = calc.computeValues(Map(
-        "a" -> Signal{Plus(Literal(1.0), Literal(1.0))}))
+  val calc = Calculator
+
+  test("computeValues for plus with ints") {
+     val resultPlus = calc.computeValues(Map("a" -> Signal{Plus(Literal(1.0), Literal(1.0))}))
     assert(resultPlus("a")() == 2.0)
+  }
+
+  test("computeValues for plus with refs") {
+    val resultPlus = calc.computeValues(Map("a" -> Signal{Literal(1.0)}, "b" -> Signal{Plus(Ref("a"), Literal(1.0))}))
+    assert(resultPlus("a")() == 1.0)
+    assert(resultPlus("b")() == 2.0)
+  }
+
+  test("computeValues for divide with refs") {
+    val resultPlus = calc.computeValues(Map("a" -> Signal{Literal(1.0)}, "b" -> Signal{Plus(Ref("a"), Literal(0.0))}))
+    assert(resultPlus("a")() == 1.0)
+    assert(resultPlus("b")() == 1.0)
+  }
+
+  test("computeValues for non-existent reference should return NaN") {
+    val result: Map[String, Signal[Double]] = calc.computeValues(Map("a" -> Signal(Ref("z"))))
+    val double: java.lang.Double = result("a")()
+    assert(double.isNaN)
   }
 
 }
